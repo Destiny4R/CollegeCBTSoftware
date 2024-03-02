@@ -1,0 +1,50 @@
+[
+  {
+    "outputFileName": "wwwroot/js/termregister.min.js",
+    "inputFiles": [
+      "wwwroot/js/termregister.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/student.min.js",
+    "inputFiles": [
+      "wwwroot/js/student.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/questselections.min.js",
+    "inputFiles": [
+      "wwwroot/js/questselections.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/question.min.js",
+    "inputFiles": [
+      "wwwroot/js/question.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/nodequestion.min.js",
+    "inputFiles": [
+      "wwwroot/js/nodequestion.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/examwizard.min.js",
+    "inputFiles": [
+      "wwwroot/js/examwizard.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/examready.min.js",
+    "inputFiles": [
+      "wwwroot/js/examready.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/objectivesanswers.min.js",
+    "inputFiles": [
+      "wwwroot/js/objectivesanswers.js"
+    ]
+  }
+]

@@ -1,0 +1,302 @@
+﻿@page
+@using Microsoft.EntityFrameworkCore
+@model CollegeCBTSoftwareWeb.Pages.StartExaminationModel
+@{
+    Layout = null;
+    int spec = 0, ans = 0, continuation = 0, questToAnswer = Model.exam.NoToAnswer, nodequest = 0;
+}
+<html>
+<head>
+    <title>The Return Tech|| CBT</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/css/jqueryscripttop.css" rel="stylesheet" />
+    <link href="~/css/bootswatch.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+    </style>
+</head>
+<body>
+ @*    <div class="row mt-3">
+    <div class="col-12"> 
+    <div class="">
+        <a class="h2 d-flex justify-content-end" asp-page="/Index"><i class="dripicons-home"></i>Home</a>
+    </div>*@
+        <div class="card">
+            <div class="card-body">
+                <div class="container-fluid">
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <table class="table-bordered table-striped">
+                                    <tr>
+                                        <th>Full Name:</th>
+                                        <td>@Model.FullName</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Registration Number:</th>
+                                        <td>@Model.RegNumber</td>
+                                    </tr><tr>
+                                        <th>Course:</th>
+                                        <td>@Model.exam.CourseTable.Name</td>
+                                    </tr><tr>
+                                        <th>Semester:</th>
+                                        <td>@Model.exam.Semester</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Level:</th>
+                                        <td>@Model.exam.Level</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Session/Year:</th>
+                                        <td>@Model.exam.SessionTable.Name</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <div class=" text-danger mt-lg-5">
+                                    <strong class="h1" id="countdown"></strong>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="">
+                        <input type="hidden" name="course" id="course" data-id="@Model.exam.CourseId" value="@Model.exam.CourseTable.Name" />
+                        <input name="semester" id="semester" data-id="@Model.exam.Semester" type="hidden" value="@Model.exam.Semester" />
+                        <input name="level" id="level" type="hidden" data-id="@Model.exam.Level" value="@Model.exam.Level" />
+                        <input type="hidden" name="session" id="session" data-id="@Model.exam.SessionYearId" value="@Model.exam.SessionTable.Name"  />
+                    <input type="hidden" id="regnumber" value="@Model.RegNumber"  />
+                    <input type="hidden" id="fullname" value="@Model.FullName"  />
+                    </div>
+                    
+                </div>
+
+
+
+
+                <div class="container-fluid mt-lg-5">
+                @* <div class="h2 text-center"><strong>Welcome to @Model.exam.SessionTable.Name, @Model.exam.Semester, @Model.exam.Level @Model.exam.CourseTable.Name Examination</strong></div> *@
+                    <div class="row">
+                        <div class="col-md-9">
+                            <form id="examwizard-question">
+
+                            @foreach (var id in SD.ShuffleQuestions(Model.idz, questToAnswer))
+                            {
+                                var quest = Model.questions.FirstOrDefault(z => z.Id == id);
+                                if (quest != null)
+                                {
+                                    spec++;
+                                    string showbiz = spec == 1 ? "" : "hidden";
+                                    <div class="question @showbiz" data-question="@spec">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="question-title color-green h4"><strong>Q-@spec.</strong> @quest.Question</div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-50">
+                                            <div class="col-xs-12">
+                                                <div class="alert alert-danger hidden"></div>
+                                                <div class="green-radio color-green">
+                                                    <div type="A" class="container-fluid">
+                                                        <div class="form-check-inline mb-2">
+                                                            <div class="custom-control custom-radio">
+                                                                <input type="radio" data-alternatetype="radio" name="fieldName[@ans]" data-alternateName="answer[@ans]" data-id="@quest.Id" data-alternateValue="A" value="@quest.OptionOne" id="answer-@ans-1" />&ensp;<label class="custom-control-label" for="answer-@ans-1"><strong>A -</strong> &nbsp; @quest.OptionOne</label>
+                                                            </div>
+                                                        </div><br />
+                                                        <div class="form-check-inline mb-2">
+                                                            <div class="custom-control custom-radio">
+                                                                <input type="radio" data-alternatetype="radio" name="fieldName[@ans]" data-alternateName="answer[@ans]" data-id="@quest.Id" data-alternateValue="B" value="@quest.OptionTwo" id="answer-@ans-2" />&ensp;<label class="custom-control-label" for="answer-@ans-2"><strong>B -</strong> &nbsp;@quest.OptionTwo</label>
+                                                            </div>
+                                                        </div><br />
+                                                        @if (!string.IsNullOrEmpty(quest.OptionThree))
+                                                        {
+                                                            <div class="form-check-inline mb-2">
+                                                                <div class="custom-control custom-radio">
+                                                                    <input type="radio" data-alternatetype="radio" name="fieldName[@ans]" data-alternateName="answer[@ans]" data-id="@quest.Id" data-alternateValue="C" value="@quest.OptionThree" id="answer-@ans-3" />&ensp;<label class="custom-control-label" for="answer-@ans-3"><strong>C -</strong> &nbsp;@quest.OptionThree</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <br />
+                                                        }
+                                                        @if (!string.IsNullOrEmpty(quest.OptionThree))
+                                                        {
+                                                            <div class="form-check-inline mb-2">
+                                                                <div class="custom-control custom-radio">
+                                                                    <input type="radio" data-alternatetype="radio" name="fieldName[@ans]" data-alternateName="answer[@ans]" data-id="@quest.Id" data-alternateValue="D" value="@quest.OptionFour" id="answer-@ans-4" /> &ensp;<label class="custom-control-label" for="answer-@ans-4"><strong>D - </strong> &nbsp;@quest.OptionFour</label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    ans++;
+                                }
+                            }
+                            <input type="hidden" value="1" id="currentQuestionNumber" name="currentQuestionNumber" />
+                            <input type="hidden" value="@questToAnswer" id="totalOfQuestion" name="totalOfQuestion" />
+                                <input type="hidden" value="[]" id="markedQuestion" name="markedQuestions" />
+
+
+                            </form>
+
+                        <div class="row">
+                            <div class="col-12 col-lg-4 col-md-8 exams-footer">
+                                <div class="d-flex justify-content-between">
+                                    <div class="back-to-prev-question-wrapper text-center">
+                                        <a href="javascript:void(0);" id="back-to-prev-question" class="btn btn-success disabled">
+                                            Back
+                                        </a>
+                                    </div>
+                                    <div class=" footer-question-number-wrapper text-center">
+                                        <div class="mt-4">
+                                            <span id="current-question-number-label">1</span>
+                                            <span>of <b>@questToAnswer</b></span>
+                                        </div>
+                                        @* <div class="mt-4">
+                                        Question Number
+                                        </div> *@
+                                    </div>
+                                    <div class="go-to-next-question-wrapper text-center">
+                                        <a href="javascript:void(0);" id="go-to-next-question" class="btn btn-success">
+                                            Next
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="visible-xs">
+                                    <div class="clearfix"></div>
+                                    <div class="mt-50"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-3 mb-3">
+                                    <div class="">
+                                        @for (var i = 1; i <= questToAnswer; i++)
+                                        {
+                                            string hidden = i == 1 ? "" : "hidden";
+                                            <div class="mark-unmark-wrapper hidden" data-question="@i">
+                                                <a href="javascript:void(0);" class="mark-question btn btn-success" data-question="@i">
+                                                    <b>Mark</b>
+                                                </a>
+                                                <a href="javascript:void(0);" class="hidden unmark-question btn btn-success" data-question="@i">
+                                                    <b>Unmark</b>
+                                                </a>
+                                            </div>
+                                        }
+
+                                    </div>
+                                    <div class="footer-finish-question-wrapper text-center">
+                                        <a href="javascript:void(0);" id="finishExams" class="btn btn-success disabled">
+                                            <b>Finish</b>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-md-3" id="quick-access-section">
+                            <table class="table table-responsive table-sm table-borderd table-hover table-striped text-center">
+                                <thead class="question-response-header">
+                                    <tr>
+                                        <th class="text-center">Question</th>
+                                        <th class="text-center">Response</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                @for (var i = 1; i <= questToAnswer; i++)
+                                {                                   
+                                    <tr class="question-response-rows" data-question="@i">
+                                        <td>@i</td>
+                                        <td class="question-response-rows-value">-</td>
+                                    </tr>
+                                }
+                                   
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-12">
+                                <div class="input-group d-flex justify-content-center">
+                                        <a href="javascript:void(0)" class="btn btn-success" id="quick-access-prev">< Back</a>
+                                        <span class="btn btn-info" id="quick-access-info"></span>
+                                        <a href="javascript:void(0)" class="btn btn-success" id="quick-access-next">Next ></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Exmas Footer - Multi Step Pages Footer -->
+                    
+                </div>
+
+                <!-- Finsih Modal -->
+                <div class="modal" id="finishExamsModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <div class="modal-title h3" id="myModalLabel">Examination Final Report</div>
+                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <strong>Total Of Answered Question:</strong>
+                                <input readonly type="text" class="form-control" id="quesAnswered" />
+                                    @* <span class="finishExams-total-answerd"></span> *@
+                                </div>
+                                <div>
+                                    <strong>Total Correct Answers:</strong>
+                                <input readonly type="text" class="form-control" id="corrAnswered" />
+                                    @* <span class="finishExams-total-marked"></span> *@
+                                </div>
+                                <div>
+                                    <strong>Total Wrong Answers:</strong>
+                                <input readonly type="text" class="form-control" id="wrongAnswered" form-control"" />
+                                    @* <span class="finishExams-total-remaining"></span> *@
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            <button type="button" class="btn btn-dark" onclick="examinationSubmission();">Testing</button>
+            <button type="button" class="btn btn-dark" onclick="stoptimer();">Stop Timer</button>
+            <input type="hidden" value="@Model.exam.Duration" id="duration" />
+            </div>
+        </div>
+   @*  </div>
+    </div> *@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/select2/sweetalert2.min.js"></script>
+    <script src="~/lib/blockui/jquery.blockui.min.js"></script>
+    <script src="~/js/bootswatch.js"></script>
+    <script src="~/js/examwizard.js"></script>
+    <script>
+        var examWizard = $.fn.examWizard({
+            finishOption: {
+                enableModal: true,
+            },
+            quickAccessOption: {
+                quickAccessPagerItem: @questToAnswer/2,
+            },
+        });
+    </script><script src="~/js/objectivesanswers.min.js"></script>
+    <script type="text/javascript">
+
+        
+
+        // var _gaq = _gaq || [];
+        // _gaq.push(['_setAccount', 'UA-36251023-1']);
+        // _gaq.push(['_setDomainName', 'jqueryscript.net']);
+        // _gaq.push(['_trackPageview']);
+
+        // (function () {
+        //     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        //     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        //     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        // })();
+
+    </script>
+    </body>
+</html>

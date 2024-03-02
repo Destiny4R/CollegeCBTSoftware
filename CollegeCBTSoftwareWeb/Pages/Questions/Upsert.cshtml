@@ -1,0 +1,164 @@
+﻿@page
+@model CBTInformationSystemWeb.Pages.Questions.UpsertModel
+@{
+    ViewData["Title"] = Model.Question.Id > 0 ? "Update Question" : "Register Question";
+}
+<link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+
+<div class="d-flex justify-content-between">
+    <div class="badge bg-soft-dark">
+        <h3><strong>@ViewData["Title"]</strong></h3>
+    </div>
+    <div>
+        <a class="btn btn-info" asp-page="Index">
+            <i class="fa fa-arrow-left"></i> Back
+        </a>
+    </div>
+</div>
+@if (TempData["error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show mb-0" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong><i class="mdi mdi-alert-outline h4 text-danger"></i></strong>&emsp; @TempData["error"].
+    </div>
+}
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success mt-2" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
+        <strong><i class="mdi mdi-checkbox-marked-circle-outline 43 text-success"></i></strong> &emsp; @TempData["success"].
+    </div>
+}
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" id="myquestion">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label"> Select Course</label>
+                                        <select asp-for="Question.Course" class="basic-subject custom-select form-control " asp-items="Model.SelectOptions._Course">
+                                            <option></option>
+                                        </select>
+                                        <span asp-validation-for="Question.Course" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Select Semester</label>
+                                        <select asp-for="Question.Semester" class="custom-select select-for-semester form-control">
+                                            <option></option>
+                                            <option value="First">First</option>
+                                            <option value="Second">Second</option>
+                                        </select>
+                                        <span asp-validation-for="Question.Semester" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Select Level</label>
+                                        <select asp-for="Question.Level" class="custom-select select-for-level form-control" >
+                                            <option></option>
+                                            <option value="100">100</option>
+                                            <option value="200">200</option>
+                                            <option value="300">300</option>
+                                            <option value="400">400</option>
+                                        </select>
+                                        <span asp-validation-for="Question.Level" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label class="col-md-2 col-form-label" asp-for="Question.Question"></label>
+                        <div class="col-md-10">
+                            <textarea rows="3" asp-for="Question.Question" class="form-control" placeholder="Question Option"></textarea>
+                            <span asp-validation-for="Question.Question" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group row mt-3">
+                        <label asp-for="Question.OptionOne" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <textarea rows="3" asp-for="Question.OptionOne" class="form-control" placeholder="Option one"></textarea>
+                            <span asp-validation-for="Question.OptionOne" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label asp-for="Question.OptionTwo" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <textarea rows="3" asp-for="Question.OptionTwo" class="form-control" placeholder="Option two"></textarea>
+                            <span asp-validation-for="Question.OptionTwo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label asp-for="Question.OptionThree" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <textarea rows="3" asp-for="Question.OptionThree" class="form-control" placeholder="Option three"></textarea>
+                            <span asp-validation-for="Question.OptionThree" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label asp-for="Question.OptionFour" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <textarea rows="3" asp-for="Question.OptionFour" class="form-control" placeholder="Option four"></textarea>
+                            <span asp-validation-for="Question.OptionFour" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label asp-for="Question.Answer" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <textarea rows="3" class="form-control" asp-for="Question.Answer" placeholder="Question Answer"></textarea>
+                            <span asp-validation-for="Question.Answer" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            @if (Model.Question.Id > 0)
+                            {
+                                <input type="hidden" asp-for="Question.Id" />
+                                <button class="btn btn-info me-md-2" type="submit">
+                                    <i class="fa fa-send"></i>
+                                    Update Question
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" type="submit"> Register</button>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script>
+        $(".basic-subject").select2({
+            placeholder: "Select Subject",
+            theme: "classic",
+            allowClear: true
+        });
+        $(".select-for-level").select2({
+            placeholder: "Select Level",
+            theme: "classic",
+            allowClear: true
+        });
+        $(".select-for-semester").select2({
+            placeholder: "Select Semester",
+            theme: "classic",
+            allowClear: true
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

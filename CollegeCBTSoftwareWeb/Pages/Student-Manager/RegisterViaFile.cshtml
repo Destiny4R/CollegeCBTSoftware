@@ -1,0 +1,136 @@
+﻿@page
+@model CollegeCBTSoftwareWeb.Pages.Student_Manager.RegisterViaFileModel
+@{
+    ViewData["Title"] = "Register Student File Excel File";
+}
+<link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+<div class="container">
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <strong><i class="mdi mdi-alert-outline h4 text-danger"></i></strong>&emsp; @TempData["error"].
+        </div>
+    }
+    @if (TempData["success"] != null)
+    {
+        <div class="alert alert-success mt-2" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
+            <strong><i class="mdi mdi-checkbox-marked-circle-outline h4 text-success"></i></strong> &emsp; @TempData["success"].
+        </div>
+    }
+    @if (Model.some > 0)
+    {
+        <div class="alert alert-primary mt-2" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
+            @if (Model.Messages.Success > 0)
+            {
+                <strong><i class="mdi mdi-checkbox-marked-circle-outline h4 text-success"></i></strong>
+                <span class="text-success">@Model.Messages.Success: Student(s) Successfully Registered</span>
+                <br />
+            }
+            @if (Model.Messages.Failed > 0)
+            {
+                <strong><i class="fas fa-exclamation-triangle h4 text-danger"></i></strong>
+                <span class="text-danger">@Model.Messages.Failed: Student(s) Registration Failed</span>
+                <br />
+            }
+            @if (Model.Messages.Exist > 0)
+            {
+                <strong><i class="ti-alert h4 text-warning"></i></strong>
+                <span class="text-warning">@Model.Messages.Exist: Student(s) Have Already Been Registered</span>
+            }
+        </div>
+    }
+    <div class="card">
+        <div class="card-body">
+            <div class="header-title h3 text-center">Select the correct information bellow to Start your m</div>
+            <div class="mt-3">
+                <form method="post">
+                    <div class="row">
+                        <div class="col-md-6 mt-3">
+                            <label class="">Select Semester</label>
+                            <select class="select-semester select2-multiple" asp-for="selection.Semester" style="width: 100%">
+                                <option></option>
+                                <option value="First">First</option>
+                                <option value="Second">Second</option>
+                            </select>
+                            <span asp-validation-for="selection.Semester" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="">Select Level</label>
+                            <select class="select-level  select2-multiple" asp-for="selection.Level" style="width: 100%">
+                                <option></option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                            </select>
+                            <span asp-validation-for="selection.Level" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="">Select First Semester Courses</label>
+                            <select class="select-course form-control custom-select" style="width: 100%;" asp-items="Model.SelectOptions._Course">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="selection.Course" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="">Select Second Semester Courses</label>
+                            <select class="select-course2 form-control custom-select" asp-for="selection.Course" style="width: 100%;" asp-items="Model.SelectOptions._Course">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="selection.Course" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="">Session/Year</label>
+                            <select class="select-session select2-multiple" asp-for="selection.SessionId" style="width: 100%" asp-items="Model.SelectOptions._Sessions">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="selection.SessionId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <label class="">Select an Excel File</label>
+                            <input asp-for="selection.ExcelFile" class="form-control" />
+                            <span asp-validation-for="selection.ExcelFile" class="text-danger"></span>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button class="btn btn-success" type="submit">Upload File</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script>
+        $('.select-semester').select2({
+            placeholder: "Select Semester",
+            theme: "classic"
+        });
+
+        $('.select-course').select2({
+            placeholder: "Select First Semester Course",
+            theme: "classic"
+        });
+        $('.select-course2').select2({
+            placeholder: "Select Second Semester Course",
+            theme: "classic"
+        });
+        $(".select-level").select2({
+            placeholder: "Select Level",
+            theme: "classic",
+            allowClear: true
+        });
+        $(".select-session").select2({
+            placeholder: "Select Session/Year",
+            theme: "classic",
+            allowClear: true
+        });
+    </script>
+}

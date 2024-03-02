@@ -1,0 +1,147 @@
+﻿@page
+@model CollegeCBTSoftwareWeb.Pages.PublishExams.UpsertModel
+@{
+    ViewData["Title"] = Model.pubish.Id > 0 ? "Update Class Exams Publish" : "Publish Class Exams";
+}
+<link href="~/assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet">
+<link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+<div class="d-flex justify-content-between">
+    <div class="badge bg-soft-dark">
+        <h3><strong>@ViewData["Title"]</strong></h3>
+    </div>
+    <div>
+        <a class="btn btn-info" asp-page="Index">
+            <i class="fa fa-plus-square"></i> Back
+        </a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <div class="form-group row mt-3">
+                        <label class="col-md-2 col-form-label">Select Course</label>
+                        <div class="col-md-10">
+                            <select asp-for="pubish.CourseId" class="custom-select select-for-subject form-control-lg" asp-items="Model.SelectOptions._Course">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="pubish.CourseId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label class="col-md-2 col-form-label">Select Session/Year</label>
+                        <div class="col-md-10">
+                            <select asp-for="pubish.SessionYearId" class="custom-select select-for-session form-control-lg" asp-items="Model.SelectOptions._Sessions">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="pubish.SessionYearId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label class="col-md-2 col-form-label">Select Level</label>
+                        <div class="col-md-10">
+                            <select asp-for="pubish.Level" class="custom-select select-for-class form-control-lg" >
+                                <option></option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                            </select>
+                            <span asp-validation-for="pubish.Level" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label class="col-md-2 col-form-label">Select Term</label>
+                        <div class="col-md-10">
+                            <select asp-for="pubish.Semester" class="custom-select select-for-term form-control-lg ">
+                                <option></option>
+                                <option value="First">First</option>
+                                <option value="Second">Second</option>
+                            </select>
+                            <span asp-validation-for="pubish.SessionYearId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group row mt-3">
+                        <label asp-for="pubish.NoToAnswer" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="pubish.NoToAnswer" class="form-control"  />
+                            <span asp-validation-for="pubish.NoToAnswer" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label asp-for="pubish.StartDate" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <input asp-for="pubish.StartDate" type="text" class="form-control" data-provide="datepicker" data-date-autoclose="true" />
+                            <span asp-validation-for="pubish.StartDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label asp-for="pubish.Duration" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-10">
+                            <div class="input-group">
+                                <input asp-for="pubish.Duration" class="form-control" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="dripicons-clock">&nbsp; Minutes</i></span>
+                                </div>
+                                <span></span>
+                            </div>
+                            <span asp-validation-for="pubish.Duration" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            @if (Model.pubish.Id > 0)
+                            {
+                                <input type="hidden" asp-for="pubish.Id" />
+                                <button class="btn btn-info me-md-2" type="submit">
+                                    <i class="fa fa-send"></i>
+                                    Update
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" type="submit"> Publish Exams</button>
+                            }
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script>
+        $.fn.datepicker.defaults.format = "mm/dd/yyyy";
+        $('.datepicker').datepicker({
+            startDate: '-3d'
+        });
+        //
+        $(".select-for-term").select2({
+            placeholder: "Select term",
+            theme: "classic",
+            allowClear: true
+        });
+        $(".select-for-class").select2({
+            placeholder: "Select class",
+            theme: "classic",
+            allowClear: true
+        });
+        $(".select-for-session").select2({
+            placeholder: "select session-year",
+            theme: "classic",
+            allowclear: true
+        });
+        $(".select-for-subject").select2({
+            placeholder: "select ubject",
+            theme: "classic",
+            allowclear: true
+        });
+    </script>
+}
+

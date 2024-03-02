@@ -1,0 +1,49 @@
+﻿@page
+@model CBTInformationSystemWeb.Pages.Student_Manager.StudentExamRegister.IndexModel
+@{
+    ViewData["Title"] = "List of Student Registered";
+}
+<link href="~/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<div class="d-flex justify-content-between">
+    <div class="badge bg-soft-dark">
+        <h3><strong>@ViewData["Title"]</strong></h3>
+    </div>
+    <div>
+        <a class="btn btn-info" asp-page="Register">
+            <i class="fa fa-plus-square"></i> Register New Student
+        </a>
+    </div>
+</div>
+@if (TempData["success"] != null)
+{
+    <div class="alert alert-success mt-2" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">&times;</button>
+        <strong><i class="mdi mdi-checkbox-marked-circle-outline h4 text-success"></i></strong> &emsp; @TempData["success"].
+    </div>
+}
+<div class="card mt-3">
+    <div class="card-body">
+        <table id="studentExamTable" class="table table-bordered table-striped table-sm" width="100%">
+            <thead>
+                <tr>
+                    <th>S/N</th>
+                    <th>Student Full Name</th>
+                    <th>Registration No.</th>
+                    <th>Semester</th>
+                    <th>Session/Year</th>
+                    <th>Level</th>
+                    <th>Total Subjects</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+</div>
+@section Scripts {
+    <script src="~/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="~/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/blockui/jquery.blockui.min.js"></script>
+    <script src="~/js/termregister.min.js"></script>
+}

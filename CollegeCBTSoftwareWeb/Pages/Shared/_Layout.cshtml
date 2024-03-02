@@ -1,0 +1,235 @@
+﻿@inject UserManager<ApplicationUser> _userInManager
+@inject SignInManager<ApplicationUser> _signInManager
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] || CBT College</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesdesign" name="author" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="~/assets/images/favicon.ico">
+
+    <!-- Bootstrap Css -->
+    <link href="~/css/jqueryscripttop.css" rel="stylesheet" />
+    <link href="~/lib/tom-select/css/tom-select.bootstrap5.min.css" rel="stylesheet" />
+    <link href="~/lib/tom-select/css/tom-select.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/sweetalert2.min.css" rel="stylesheet" />
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body data-sidebar="dark">
+
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <header id="page-topbar">
+            <div class="navbar-header">
+                <div class="d-flex">
+                    <!-- LOGO -->
+                    <div class="navbar-brand-box">
+                        <a href="index.html" class="logo logo-dark">
+                            <span class="logo-sm">
+                                <img src="~/assets/images/logo-sm-dark.png" alt="" height="22">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/assets/images/logo-dark.png" alt="" height="20">
+                            </span>
+                        </a>
+
+                        <a href="index.html" class="logo logo-light">
+                            <span class="logo-sm">
+                                <img src="~/assets/images/logo-sm-light.png" alt="" height="22">
+                            </span>
+                            <span class="logo-lg">
+                                <img src="~/assets/images/logo-light.png" alt="" height="20">
+                            </span>
+                        </a>
+                    </div>
+
+                    <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect" id="vertical-menu-btn">
+                        <i class="mdi mdi-backburger"></i>
+                    </button>
+
+                </div>
+
+                <div class="d-flex">
+
+                   @*  <div class="d-inline-block">
+                        <h5><span class="badge badge-danger float-right">v1.0.0</span></h5>
+                    </div> *@
+                    <div class="dropdown d-inline-block">
+                        <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="rounded-circle header-profile-user" src="~/assets/images/users/avatar-1.jpg"
+                                 alt="Header Avatar">
+                                @if (_signInManager.IsSignedIn(User))
+                                {
+                                <span class="d-none d-sm-inline-block ml-1">
+                                    @_userInManager.GetUserName(User)
+                                </span>  
+                                }
+                            <i class="mdi mdi-chevron-down d-none d-sm-inline-block"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <!-- item-->
+                            @* <a class="dropdown-item" href="#"><i class="mdi mdi-face-profile font-size-16 align-middle mr-1"></i> Profile</a>
+                            <a class="dropdown-item" href="#"><i class="mdi mdi-credit-card-outline font-size-16 align-middle mr-1"></i> Billing</a>
+                            <a class="dropdown-item" href="#"><i class="mdi mdi-account-settings font-size-16 align-middle mr-1"></i> Settings</a>
+                            <a class="dropdown-item" href="#"><i class="mdi mdi-lock font-size-16 align-middle mr-1"></i> Lock screen</a> *@
+                            <div class="dropdown-divider"></div>
+                            <form class="form-inline" asp-area="" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Account/Login", new { area = "" })">
+                                <button type="submit" class="btn btn-link dropdown-item">
+                                    <i class="dripicons-exit text-muted mr-2"></i><span>Log Out</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="vertical-menu">
+
+            <div data-simplebar class="h-100">
+
+                <!--- Sidemenu -->
+                <div id="sidebar-menu">
+                    <!-- Left Menu Start -->
+                    <ul class="metismenu list-unstyled" id="side-menu">
+                        <li class="menu-title">Dashboard</li>
+                        @if (User.IsInRole(SD.Role_Student))
+                        {
+                            <li>
+                                <a asp-page="/GetStarted" class="waves-effect">
+                                <i class="mdi mdi-file-document-box-outline"></i>
+                                <span>Getting Started</span>
+                            </a>
+                        </li>
+                        }
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-settings-outline"></i>
+                                    <span>System Manager</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a asp-page="/Manager/Manage-Session/Index">Add Session/Year</a></li>
+                                    <li><a asp-page="/Manager/Manage-Courses/Index">Add Course</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-school-outline"></i>
+                                    <span>Student Registration</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a asp-page="/Student-Manager/Registration/Upsert">Add Student</a></li>
+                                <li><a asp-page="/Student-Manager/Registration/Index">List</a></li>
+                                    <li><a asp-page="/Student-Manager/RegisterViaFile">Register Many Students</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-school-outline"></i>
+                                    <span>Exam Registration</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a asp-page="/Student-Manager/StudentExamRegister/Register">Register Student</a></li>
+                                <li><a asp-page="/Student-Manager/StudentExamRegister/Index">List</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-title">Examination Manager</li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow  waves-effect">
+                                    <i class="mdi mdi-flip-horizontal"></i>
+                                    <span>Publish/Printing</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a asp-page="/PublishExams/Index">Publish Exams</a></li>
+                                    <li><a asp-page="/PublishExams/ResultSheet">Print Result Sheet</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-title">Question Area</li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                                    <i class="mdi mdi-format-underline"></i>
+                                    <span>Manager Questions</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a asp-page="/Questions/Upsert">Add Question</a></li>
+                                <li><a asp-page="/Questions/Index">View Question</a></li>
+                                <li><a asp-page="/Questions/NodeQuestion/Index">Node Question</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="menu-title">Answer Area</li>
+
+                            <li>
+                                <a href="javascript: void(0);" class="has-arrow  waves-effect">
+                                    <i class="mdi mdi-flip-horizontal"></i>
+                                    <span>View/Print/Download</span>
+                                </a>
+                                <ul class="sub-menu" aria-expanded="false">
+                                    <li><a href="#">View Answered Questions</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                    </ul>
+
+                </div>
+                <!-- Sidebar -->
+            </div>
+        </div>
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div> <!-- container-fluid -->
+             </div>
+
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                2024 - @DateTime.Now.Year © Apaxy.
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="text-sm-right d-none d-sm-block">
+                                Designed & Build <i class="mdi mdi-heart text-danger"></i> by <a href="https://www.thereturnpark.com" target="_blank" class="text-muted">https://www.thereturnpark.com</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+            <!-- end main content-->
+
+        </div>
+        <!-- JAVASCRIPT -->
+    <script src="~/assets/libs/jquery/jquery.min.js"></script>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/select2/sweetalert2.min.js"></script>
+    <script src="~/assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="~/assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="~/assets/libs/node-waves/waves.min.js"></script>
+    <script src="~/lib/tom-select/js/tom-select.complete.min.js"></script>
+
+    <script src="~/assets/js/app.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

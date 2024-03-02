@@ -1,0 +1,152 @@
+﻿@page
+@model CollegeCBTSoftwareWeb.Pages.Student_Manager.StudentExamRegister.EditModel
+@{
+    ViewData["Title"] = "Edit Student Examination Information";
+    int sn = 0;
+}
+<link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+<div class="d-flex justify-content-between">
+    <div class="badge bg-soft-dark">
+        <h3><strong>@ViewData["Title"]</strong></h3>
+    </div>
+    <div>
+        <a class="btn btn-info" asp-page="Index">
+            <i class="fa fa-arrow-left"></i> Back
+        </a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" asp-page-handler="Regist">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="example-input1-group1">Student Full Name</label>
+                                <input type="text" asp-for="ExamReg.Student.FullName" class="form-control" placeholder="Student Full Name">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="example-input1-group1">Student Reg. Number</label>
+                                <input type="text" asp-for="ExamReg.Student.ApplicationUser.UserName" class="form-control" placeholder="Registration Number">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label class="col-md-2 col-form-label">Select Semester</label>
+                        <div class="col-md-10">
+                            <select asp-for="ExamReg.Semester" class="custom-select select-for-semester form-control-lg ">
+                                <option></option>
+                                <option value="First">First</option>
+                                <option value="Second">Second</option>
+                            </select>
+                            <span asp-validation-for="ExamReg.Semester" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label class="col-md-2 col-form-label">Select Class</label>
+                        <div class="col-md-10">
+                            <select asp-for="ExamReg.Level" class="custom-select select-for-class form-control-lg">
+                                <option></option>
+                                <option value="100">100</option>
+                                <option value="200">200</option>
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                            </select>
+                            <span asp-validation-for="ExamReg.Level" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label class="col-md-2 col-form-label">Select Session/Year</label>
+                        <div class="col-md-10">
+                            <select asp-for="ExamReg.SessionYearId" class="custom-select select-for-session form-control-lg" asp-items="Model.SelectOptions._Sessions">
+                                <option></option>
+                            </select>
+                            <span asp-validation-for="ExamReg.SessionYearId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row mt-3">
+                        <label class="col-md-2 col-form-label"> Select Courses</label>
+                        <div class="col-md-10">
+                            <select asp-for="ExamReg.Courses" class="basic-multiple js-states custom-select form-control-lg " multiple="multiple" asp-items="Model.SelectOptions._Course">
+                                <option></option>
+                            </select>
+
+                        </div>
+                    </div>
+                    @if(Model.check > 0){
+                        <div class="form-group row mt-3">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-10">
+                                <table class="table table-bordered table-striped tablee-sm table-responsive" id="coursetablle">
+                                    <thead>
+                                        <tr>
+                                            <th>S/N</th>
+                                            <th>Subject</th>
+                                            <th>Exam Written</th>
+                                            <th>Action</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.ExamReg.StudentCourses)
+                                        {
+                                            sn++;
+                                            <tr>
+                                                <td>@sn</td>
+                                                <td>@item.CourseTable.Name</td>
+                                                <td>@item.Taken</td>
+                                                <td>
+                                                    <button style="cursor:pointer" type="button" onclick="deletestudentsubject(this);" data-id="@item.Id" class="btn btn-sm btn-danger"> <i class="fa fa-trash"></i> </button>
+                                                </td>
+                                                <td>
+                                                    <button style="cursor:pointer" type="button" onclick="resetExampaper(this);" data-id="@item.Id" class="btn btn-sm btn-danger"> <i class="fa fa-trash"></i> </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    }
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-10">
+                            <input type="hidden" asp-for="ExamReg.Id" />
+                            <button class="btn btn-primary" type="submit"> Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/blockui/jquery.blockui.min.js"></script>
+    <script>
+        $(".select-for-semester").select2({
+            placeholder: "Select Semester",
+            theme: "classic",
+            allowClear: true
+        });
+        $(".select-for-class").select2({
+            placeholder: "Select Level",
+            theme: "classic",
+            allowClear: true
+        });
+        $(".select-for-session").select2({
+            placeholder: "Select Session/Year",
+            theme: "classic",
+            allowClear: true
+        });
+
+        $('.basic-multiple').select2({
+            placeholder: "Select Subjects",
+            theme: "classic",
+        });
+    </script>
+    <script src="~/js/generalcalls.js" asp-append-version="true"></script>
+}
